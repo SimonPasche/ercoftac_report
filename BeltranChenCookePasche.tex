@@ -10,10 +10,18 @@
 \usepackage[english]{babel}
 \usepackage{psfrag}
 \usepackage{fancyhdr}
+\usepackage{mathrsfs}
 \usepackage{natbib}
 \usepackage{xcolor}
 
+% Algebraic rings.
+\newcommand*{\Ints}{\mathbb{Z}}
+\newcommand*{\Reals}{\mathbb{R}}
+
 % Operators.
+\renewcommand*{\L}{\mathscr{L}}
+\newcommand*{\Lnp}{\L_\mathrm{np}}
+\newcommand*{\Lp}{\L_\mathrm{p}}
 \newcommand*{\p}[3][1]{%
     \if#11
     \frac{\partial #2}{\partial #3}
@@ -57,7 +65,7 @@
         \large{%
             Victor Beltran,\footnote{Universidad Polit\'ecnica de Madrid}
             Kevin K. Chen,\footnote{University of Southern California}
-            Emma Cooke,\footnote{Imperial College London}
+            Emma Cooke,\footnote{Imperial College London} and
             Simon Pasche\footnote{\'Ecole Polytechnique F\'ed\'erale de Lausanne}%
         }%
     }
@@ -109,6 +117,43 @@ Finally, we summarize our work in \autoref{sec:conclusions}.
 \label{sec:theory}
 
 \subsection{The \KSE}
+
+In this report, we cover two different form of the \KSE.
+In the parallel and periodic equation, we consider the streamwise displacement $x$ on the periodic domain $[-1, 1]$ and time $t$.
+We also define positive real constants $U, \mu_0, \gamma$ respectively corresponding to the advection velocity, anti-diffusion, and short-wavelength diffusion.
+The dependent variable $w(x, t) : \Reals \times \Reals \to \Reals$ obeys the nonlinear equation
+\begin{equation}
+    \label{eq:ks-parallel}
+    \p{w}{t} = \Lp w - w \p{w}{x},
+\end{equation}
+where the linear operator $\Lp$ is given by
+\begin{equation}
+    \label{eq:ks-parallel-linear}
+    \Lp := - \left(U \p{}{x} + \mu_0 \p[2]{}{x} + \gamma \p[4]{}{x}\right).
+\end{equation}
+
+The role of each term can be seen by examining a snapshot in time of the form $w = e^{i \pi n x}$ for wavenumbers $n \in \Ints$.
+The two first derivative terms correspond to advection at the speed $U + w$, as in the Burger's and Navier--Stokes equation;
+the second derivative term evaluates to $(\pi n)^2 \mu_0 w$ and is therefore antidiffusive and destabilizing;
+and the fourth derivative term evaluates to $- (\pi n)^4 \gamma w$ and is therefore diffusive, especially at short wavelengths.
+
+The non-parallel form of the \KSE\ that we will consider is
+\begin{equation}
+    \label{eq:ks-nonparallel}
+    \p{w}{t} = \Lnp w - w \p{w}{x},
+\end{equation}
+where given $\mu_0(x) = e^{-x^2}$,
+\begin{equation}
+    \label{eq:ks-nonparallel-linear}
+    \Lnp := - \left(
+        U \p{}{x} + \p{}{x} \left(\mu_0(x) \p{}{x}\right) + \gamma \p[4]{}{x}
+    \right).
+\end{equation}
+For this form, we consider $x \in \Reals$ and assume that $w$ is well-behaved at $x \to \pm \infty$.
+
+For both forms, we remark that the $U \partial / \partial x$ term is actually optional---$w$ could be replaced with $U + w$ and the $U \partial / \partial x$ term removed, and the equations will remain the same.
+In fact, most works omit the $U \partial / \partial x$ term in their analyses.
+The purpose of this term is to allow the base flow to be fixed at $w(x, t) = 0$, which corresponds to an advection speed of any arbitrary $U$.
 
 \subsection{POD-DEIM}
 
