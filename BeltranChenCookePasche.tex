@@ -12,6 +12,16 @@
 \usepackage{natbib}
 \usepackage{xcolor}
 
+% Operators.
+\newcommand*{\p}[3][1]{%
+    \if#11
+    \frac{\partial #2}{\partial #3}
+    \else
+    \frac{\partial^#1 #2}{\partial #3^#1}
+    \fi%
+}
+
+% Other commands.
 \newcommand{\kkc}[1]{\textcolor{red}{[KKC: #1]}}
 
 \marginparwidth 0pt
@@ -51,12 +61,12 @@
 
 \begin{abstract}
     We investigate the nonlinear dynamics and modeling of the Kuramoto--Sivashinsky equation.
-    Both the parallel equation with periodic boundary conditions, as well as a non-parallel equation on an infinite domain, are considered.
+    Both the common parallel equation with periodic boundary conditions, as well as a non-parallel equation on an infinite domain, are considered.
     In both equations, we report three cases where the stable solution is the trivial solution, a simple periodic orbit of a single frequency, and a more complex periodic orbit exhibiting multiple harmonics.
     In particular, the parallel periodic equation has analytical eigenvalues and eigenmodes, which allow an simple characterization of the Hopf bifurcation.
     The various types of solutions are demonstrated with phase portraits.
     Next, we compute POD-DEIM modes and reduced-order models for the parallel equation.
-    Not only does POD-DEIM capture the limit cycle with a comparatively small number of modes, but also, transient modes correctly capture the limit cycle and limit cycle modes correctly capture the transients.
+    Not only does POD-DEIM capture the limit cycle with a comparatively small number of modes, but also, transient modes correctly capture the limit cycle, and limit cycle modes correctly capture the transients.
 \end{abstract}
 
 \section{Introduction}
@@ -77,9 +87,20 @@
 
 \subsection{POD-DEIM}
 
-\section{Methods}
+\section{Numerical methods}
 
-\section{Results}
+\cite{WeidemanACMTMS00}
+\cite{HechtJNM12}
+
+\section{Characterizations of attractors}
+
+\subsection{Parallel equation}
+
+% Include discussion of Hopf bifurcation
+
+\subsection{Non-parallel equation}
+
+\section{POD-DEIM models of the parallel equation}
 
 \section{Conclusions}
 
