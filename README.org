@@ -1,13 +1,21 @@
 This is the repository for the 2016 ERCOFTAC Montestigliano Spring School report
 from Victor Beltran, Kevin Chen, Emma Cooke, and Simon Pasche.
 
-To generate the PDF, run the normal LaTeX-BibTeX-LaTeX-LaTeX cycle:
+* Compiling
 
-#+BEGIN_SRC sh
-for cmd in pdflatex bibtex pdflatex pdflatex
-do
-    $cmd BeltranChenCookePasche
-done
-#+END_SRC
+  To generate the PDF, run the normal LaTeX-BibTeX-LaTeX-LaTeX cycle:
 
-The output will be written to =BeltranChenCookePasche.pdf=.
+  #+BEGIN_SRC sh
+  for cmd in pdflatex bibtex pdflatex pdflatex
+  do
+      $cmd BeltranChenCookePasche
+  done
+  #+END_SRC
+
+  The output will be written to =BeltranChenCookePasche.pdf=.
+
+* Generating figures
+
+  To generate MATLAB figures, see the script =figures/plot_example.m=.  This
+  script includes the bells and whistles that will make the plots look uniform
+  among the authors.
