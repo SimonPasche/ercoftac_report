@@ -5,6 +5,7 @@
 
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
+\usepackage{hyperref}
 \usepackage{epsf,graphicx,amssymb,amsmath,amsbsy,authblk}
 \usepackage[english]{babel}
 \usepackage{psfrag}
@@ -21,7 +22,11 @@
     \fi%
 }
 
+% hyperref commands.
+\renewcommand*{\sectionautorefname}{Section}
+
 % Other commands.
+\newcommand{\KSE}{Kuramoto--Sivashinsky equation}
 \newcommand{\kkc}[1]{\textcolor{red}{[KKC: #1]}}
 
 \marginparwidth 0pt
@@ -60,7 +65,7 @@
 \vspace{0.3cm}
 
 \begin{abstract}
-    We investigate the nonlinear dynamics and modeling of the Kuramoto--Sivashinsky equation.
+    We investigate the nonlinear dynamics and modeling of the \KSE.
     Both the common parallel equation with periodic boundary conditions, as well as a non-parallel equation on an infinite domain, are considered.
     In both equations, we report three cases where the stable solution is the trivial solution, a simple periodic orbit of a single frequency, and a more complex periodic orbit exhibiting multiple harmonics.
     In particular, the parallel periodic equation has analytical eigenvalues and eigenmodes, which allow an simple characterization of the Hopf bifurcation.
@@ -71,28 +76,50 @@
 
 \section{Introduction}
 
-\cite{KuramotoPTP76}
-\cite{SivashinskyAA77}
-\cite{ChaturantabutRice09a}
-\cite{ChaturantabutIEEECDC09}
-\cite{HolmesTCSDSS}
-\cite{SirovichQAM87}
-\cite{KevrekidisSIAMJAM90}
-\cite{AubrySIAMJSC93}
-\cite{RowleyPD00}
+The \KSE\ is a fourth-order partial differential equation in time and one-dimensional space that arises in many physical phenomena.
+The equation was independently discovered by \cite{KuramotoPTP76} in the context of wave propagation in reaction--diffusion systems, and \cite{SivashinskyAA77} in the context of laminar flames.
+Since then, the equation has also been derived for thin film flows, interfacial instabilities, drift waves in plasmas \citep[see][]{KevrekidisSIAMJAM90}, Tollmien--Schlichting waves in flat-plate boundary layers \citep{FabbianeAMR14}, and many more applications.
+
+One of the features that makes the \KSE\ a common model problem is the complex hierarchy of attractors for different equation parameters.
+The range of stable solutions, as discussed by \cite{KevrekidisSIAMJAM90}, includes fixed points, simple periodic orbits, more complex periodic orbits (e.g., exhibiting multiple frequencies), quasi-periodic orbits, and ultimately chaos.
+Therefore, many attempts have been made to characterize the equation's complex dynamics using simple reduced-order models.
+In particular, some works \citep[e.g.,][]{AubrySIAMJSC93, RowleyPD00} have successfully taken advantage of symmetry properties to improve proper orthogonal decomposition (POD) models.
+
+Proper orthogonal decomposition---also known as principal component analysis and Karhunen--Lo\`eve expansion---is a very common data-based modal decomposition, and is discussed in works by \cite{SirovichQAM87} and \cite{HolmesTCSDSS}.
+Given a set of data snapshots, the technique extracts orthogonal modes that optimally capture the energy of the input data.
+These modes are then typically used in Galerkin models to form reduced order models.
+Despite the popularity of POD-based reduced order models, the technique suffers from a number of shortcomings.
+For instance, the kinetic energy of POD modes do not necessarily correlate to their importance in the dynamics, especially if some low-energy mode may trigger instabilities.
+The choice of modes to retain in reduced-order models, therefore, may be difficult to determine \citep[see, e.g.,][]{IlakPF08}.
+In addition, POD models generally have no stability guarantees.
+Finally, the construction of nonlinear terms in POD models may be computationally expensive.
+
+The discrete empirical interpolation method \citep[DEIM;][]{ChaturantabutIEEECDC09, ChaturantabutRice09a} addresses the last concern by intelligently selecting discrete points in the domain for which the nonlinear term is computed, and neglecting all other points.
+The DEIM method has been shown to be very computationally efficient and to create very accurate POD models.
+Although error bounds have been derived for DEIM, the precise reasons for its success have not been rigorously proven.
+
+In this report, we cover two topics related to the \KSE.
+First, we use linear stability theory and computation to characterize the equation's simple attractors.
+Second, we demonstrate the success of POD-DEIM reduced-order models for this equation.
+The \KSE\ and POD-DEIM are first reviewed in \autoref{sec:theory}.
+Next, the attractors are described in \autoref{sec:attractors}, and the application of POD-DEIM is demonstrated in \autoref{sec:pod-deim}.
+Finally, we summarize our work in \autoref{sec:conclusions}.
 
 \section{Theory}
+\label{sec:theory}
 
-\subsection{The Kuramoto--Sivashinsky Equation}
+\subsection{The \KSE}
 
 \subsection{POD-DEIM}
 
 \section{Numerical methods}
+\label{sec:methods}
 
 \cite{WeidemanACMTMS00}
 \cite{HechtJNM12}
 
 \section{Characterizations of attractors}
+\label{sec:attractors}
 
 \subsection{Parallel equation}
 
@@ -101,8 +128,10 @@
 \subsection{Non-parallel equation}
 
 \section{POD-DEIM models of the parallel equation}
+\label{sec:pod-deim}
 
 \section{Conclusions}
+\label{sec:conclusions}
 
 \section{Acknowledgements}
 
