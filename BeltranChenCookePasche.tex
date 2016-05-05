@@ -36,6 +36,7 @@
 }
 
 % Matrices.
+\newcommand*{\A}{\mathbf{A}}
 \renewcommand*{\H}{\mathbf{H}}
 \newcommand*{\I}{\mathbf{I}}
 \newcommand*{\X}{\mathbf{X}}
@@ -44,6 +45,7 @@
 \newcommand*{\SIGMA}{\mathbf{\Sigma}}
 
 % Vectors.
+\renewcommand*{\c}{\mathbf{c}}
 \renewcommand*{\u}{\mathbf{u}}
 \newcommand*{\w}{\mathbf{w}}
 \newcommand*{\x}{\mathbf{x}}
@@ -183,7 +185,7 @@ The purpose of this term is to allow the base flow to be fixed at $w(x, t) = 0$,
 }
 
 Proper orthogonal decomposition \citep{SirovichQAM87, HolmesTCSDSS} is a method of identifying dominant directions in a size $m$ set of data $\{\x_k\}_{k=1}^m$, with $\x_k \in \Complex^n$ for $k = 1, \ldots, m$.
-(It is common in many problems to restrict $\x_k$ to $\Reals^n$.)
+(It is common in many problems, as in the \KSE, to restrict $\x_k$ to $\Reals^n$.)
 The modes are ranked in a particular order so the first $r$ modes maximize the orthogonal projection of the data onto the span of those modes for each $r = 1, \ldots, m$.
 Given an inner product $\ip{\cdot}{\cdot} : \Complex^n \times \Complex^n \to \Complex$, we therefore write the POD modes $\{\u_j\}_{j=1}^m$ as the set of vectors $\u_j \in \Complex^n$ for $j = 1, \ldots, m$ such that
 \begin{subequations}
@@ -223,7 +225,9 @@ than the $n \times m$ SVD~\eqref{eq:svd-scaled}.
 The POD modes can then be recovered from~\eqref{eq:svd-scaled} by $\U = \X \W \SIGMA^{-1}$.
 This technique is known as the method of snapshots.
 
-For linear systems of the form 
+For linear systems of the form $\dot{\x}(t) = \A \x(t)$, with $\x \in \Complex^n$ and $\A \in \Complex^{n \times n}$, the Galerkin projection essentially restricts the dynamics to the span of $\{\u_j\}_{j=1}^r$.
+Given POD mode coefficients $\c(t) := \begin{bmatrix} c_1(t) & \cdots & c_r(t) \end{bmatrix}$, with $c_j \in \Complex$ for $j = 1, \ldots, r$, we enforce that $\x(t) = \U \c(t)$.
+Thus, the linear dynamics simplify to $\dot{\c}(t) = \U^* \A \U \c(t)$, where $\U^* \A \U \in \Complex^{r \times r}$ is small and should be precomputed.
 
 \section{Numerical methods}
 \label{sec:methods}
