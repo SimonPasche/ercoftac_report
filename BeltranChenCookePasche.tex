@@ -6,6 +6,7 @@
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
 \usepackage{hyperref}
+\usepackage{bm}
 \usepackage{epsf,graphicx,amssymb,amsmath,amsbsy,authblk}
 \usepackage[english]{babel}
 \usepackage{psfrag}
@@ -15,6 +16,7 @@
 \usepackage{xcolor}
 
 % Algebraic rings.
+\newcommand*{\Complex}{\mathbb{C}}
 \newcommand*{\Ints}{\mathbb{Z}}
 \newcommand*{\Reals}{\mathbb{R}}
 
@@ -22,6 +24,9 @@
 \renewcommand*{\L}{\mathscr{L}}
 \newcommand*{\Lnp}{\L_\mathrm{np}}
 \newcommand*{\Lp}{\L_\mathrm{p}}
+\newcommand*{\half}{^{1/2}}
+\newcommand*{\invhalf}{^{-1/2}}
+\newcommand*{\ip}[2]{\left<#1, #2\right>}
 \newcommand*{\p}[3][1]{%
     \if#11
     \frac{\partial #2}{\partial #3}
@@ -29,6 +34,19 @@
     \frac{\partial^#1 #2}{\partial #3^#1}
     \fi%
 }
+
+% Matrices.
+\renewcommand*{\H}{\mathbf{H}}
+\newcommand*{\I}{\mathbf{I}}
+\newcommand*{\K}{\mathbf{K}}
+\newcommand*{\U}{\mathbf{U}}
+\newcommand*{\W}{\mathbf{W}}
+\newcommand*{\SIGMA}{\mathbf{\Sigma}}
+
+% Vectors.
+\newcommand*{\x}{\mathbf{x}}
+\newcommand*{\z}{\mathbf{z}}
+\newcommand*{\PHI}{\bm{\phi}}
 
 % hyperref commands.
 \renewcommand*{\sectionautorefname}{Section}
@@ -157,6 +175,34 @@ In fact, most works omit the $U \partial / \partial x$ term in their analyses.
 The purpose of this term is to allow the base flow to be fixed at $w(x, t) = 0$, which corresponds to an advection speed of any arbitrary $U$.
 
 \subsection{POD-DEIM}
+
+Proper orthogonal decomposition \citep{SirovichQAM87, HolmesTCSDSS} is a method of identifying dominant directions in a size $m$ set of data $\{\x_k\}_{k=1}^m$, with $\x_k \in \Complex^n$ for $k = 1, \ldots, m$.
+(It is common in many problems to restrict $\x_k$ to $\Reals^n$.)
+The modes are ranked in a particular order so the first $r$ modes maximize the orthogonal projection of the data onto the span of those modes for each $r = 1, \ldots, m$.
+Given an inner product $\ip{\cdot}{\cdot} : \Complex^n \times \Complex^n \to \Complex$, we therefore write the POD modes $\{\PHI_j\}_{j=1}^m$ as the set of vectors $\PHI_j \in \Complex^n$ for $j = 1, \ldots, m$ such that
+\begin{subequations}
+    \begin{align}
+        \sum_{k=1}^m \left\|\x_k - \sum_{j=1}^r \ip{\x_k}{\PHI_j} \PHI_j \right\|_2^2 \quad & \text{is minimized for each } r = 1, \ldots, m, \\
+        \ip{\PHI_j}{\PHI_k} = 0, \quad & j \ne k.
+    \end{align}
+\end{subequations}
+Note that this expression implies an ordering of the POD modes: the first mode is chosen to maximize the orthogonal projection of the data onto it; the second mode is then chosen to maximize the projection onto the first two modes; and in general, the $r$th mode is then chosen to maximize the projection onto the first $r$ modes for increasing $r$.
+In reduced-order modeling, it is common to truncate the POD mode set and only consider the proper subset $\{\PHI_j\}_{j=1}^r$ for $1 \le r \ll m$, with the assumption that most interesting features of $\{\x_k\}_{k=1}^m$ are contained in only $r$ modes.
+
+The computation of POD is very straightforward.
+Let us assume the common case where $m \le n$ and $\ip{\z_j}{\z_k} := \z_k^* \z_j$ for $\z_j, \z_k \in \Complex^n$, and $(\cdot)^*$ indicates the conjugate transpose.
+The economy-sized singular value decomposition (SVD) of the data matrix $\K := \begin{bmatrix} \x_1 & \ldots & \x_m \end{bmatrix} \in \Complex^{n \times m}$ is
+\begin{equation}
+    \label{eq:svd}
+    \K = \U \SIGMA \W^*,
+\end{equation}
+where $\U \in \Complex^{n \times m}$ and $\U^* \U = \I$, $\SIGMA \in \Reals^{m \times m}$ is a diagonal matrix with $\{\sigma_k\}_{k=1}^m$ on the diagonal such that $\sigma_1 \ge \cdots \ge \sigma_m \ge 0$, and $\W \in \Complex^{m \times m}$ and $\W^* \W = \W \W^* = \I$.
+The POD modes are simply the columns of $\U$; that is, $\U = \begin{bmatrix} \PHI_1 & \cdots & \PHI_m \end{bmatrix}$.
+
+When representing data on non-uniform grids, it is common to use the weighted inner product $\ip{\z_j}{\z_k} := \z_k^* \H \z_j$, where typically, $\H \in \Reals^{n \times n}$ is a diagonal matrix with the positive grid sizes on the diagonal.
+In this case, the orthogonality of the POD modes with respect to this inner product is equivalent to $\U^* \H \U = \I$ instead of $\U^* \U = \I$.
+A quick examination of~\eqref{eq:svd} reveals that one can write $\H\half \K = \H\half \U \SIGMA \W^*$, where $\H\half \U$ is unitary.
+Therefore, the POD algorithm is modified so that one computes the SVD of $\H\half \K$ and left-multiplies the left singular matrix by $\H\invhalf$ to recover the matrix of POD modes.
 
 \section{Numerical methods}
 \label{sec:methods}
