@@ -176,6 +176,11 @@ The purpose of this term is to allow the base flow to be fixed at $w(x, t) = 0$,
 
 \subsection{POD-DEIM}
 
+\kkc{%
+    I'm consciously being a bit verbose here.
+    It's not hard to cut this section short to make more room for results, if need be.%
+}
+
 Proper orthogonal decomposition \citep{SirovichQAM87, HolmesTCSDSS} is a method of identifying dominant directions in a size $m$ set of data $\{\x_k\}_{k=1}^m$, with $\x_k \in \Complex^n$ for $k = 1, \ldots, m$.
 (It is common in many problems to restrict $\x_k$ to $\Reals^n$.)
 The modes are ranked in a particular order so the first $r$ modes maximize the orthogonal projection of the data onto the span of those modes for each $r = 1, \ldots, m$.
@@ -201,8 +206,21 @@ The POD modes are simply the columns of $\U$; that is, $\U = \begin{bmatrix} \PH
 
 When representing data on non-uniform grids, it is common to use the weighted inner product $\ip{\z_j}{\z_k} := \z_k^* \H \z_j$, where typically, $\H \in \Reals^{n \times n}$ is a diagonal matrix with the positive grid sizes on the diagonal.
 In this case, the orthogonality of the POD modes with respect to this inner product is equivalent to $\U^* \H \U = \I$ instead of $\U^* \U = \I$.
-A quick examination of~\eqref{eq:svd} reveals that one can write $\H\half \K = \H\half \U \SIGMA \W^*$, where $\H\half \U$ is unitary.
+A quick examination of~\eqref{eq:svd} reveals that one can write
+\begin{equation}
+    \label{eq:svd-scaled}
+    \H\half \K = \H\half \U \SIGMA \W^*,
+\end{equation}
+where $\H\half \U$ is unitary.
 Therefore, the POD algorithm is modified so that one computes the SVD of $\H\half \K$ and left-multiplies the left singular matrix by $\H\invhalf$ to recover the matrix of POD modes.
+
+We also remark that in the typical case that $m \ll n$, it is more computationally efficient to perform the $m \times m$ eigendecomposition
+\begin{equation}
+    \K^* \H \K = \W \SIGMA^2 \W^*
+\end{equation}
+than the $n \times m$ SVD~\eqref{eq:svd-scaled}.
+The POD modes can then be recovered from~\eqref{eq:svd-scaled} by $\U = \K \W \SIGMA^{-1}$.
+This technique is known as the method of snapshots.
 
 \section{Numerical methods}
 \label{sec:methods}
