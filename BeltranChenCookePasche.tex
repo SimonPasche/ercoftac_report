@@ -113,7 +113,7 @@
 
 \begin{abstract}
     We investigate the nonlinear dynamics and modeling of the \KSE.
-    Both the common parallel equation with periodic boundary conditions, as well as a non-parallel equation on an infinite domain, are considered.
+    Both the parallel equation with periodic boundary conditions, as well as a non-parallel equation on an infinite domain, are considered.
     In both equations, we report three cases where the stable solution is the trivial solution, a simple periodic orbit of a single frequency, and a more complex periodic orbit exhibiting multiple harmonics.
     In particular, the parallel periodic equation has analytical eigenvalues and eigenmodes, which allow an simple characterization of the Hopf bifurcation.
     The various types of solutions are demonstrated with phase portraits.
@@ -144,7 +144,7 @@ Although error bounds have been derived for DEIM, the precise reasons for its su
 In this report, we cover two topics related to the \KSE.
 First, we use linear stability theory and computation to characterize the equation's simple attractors.
 Second, we demonstrate the success of POD-DEIM reduced-order models for this equation.
-The \KSE\ and POD-DEIM are first reviewed in \autoref{sec:theory}.
+The \KSE\ and POD-DEIM are first reviewed in \autoref{sec:theory}, and our numerical methods in~\autoref{sec:methods}.
 Next, the attractors are described in \autoref{sec:attractors}, and the application of POD-DEIM is demonstrated in \autoref{sec:pod-deim}.
 Finally, we summarize our work in \autoref{sec:conclusions}.
 
@@ -182,7 +182,7 @@ The purpose of this term is to allow the base flow to be fixed at $w(x, t) = 0$,
 
 Proper orthogonal decomposition \citep{SirovichQAM87, HolmesTCSDSS} is a method of identifying dominant directions in a size $m$ set of data $\{\x_k\}_{k=1}^m$, with $\x_k \in \Complex^n$ for $k = 1, \ldots, m$.
 (It is common in many problems to restrict $\x_k$ to $\Reals^n$.)
-The modes are ranked in a particular order so the first $r$ modes maximize the orthogonal projection of the data onto the span of those modes for each $r = 1, \ldots, m$.
+The modes are ranked in a particular order so that the first $r$ modes maximize the orthogonal projection of the data onto the span of those modes for each $r = 1, \ldots, m$.
 Given an inner product $\ip{\cdot}{\cdot} : \Complex^n \times \Complex^n \to \Complex$ and the Kronecker delta $\delta_{jk}$, we therefore write the POD modes as the set of vectors $\phiv_j \in \Complex^n$ for $j = 1, \ldots, m$ such that
 \begin{subequations}
     \begin{align}
@@ -203,14 +203,15 @@ Given the data matrix $\X := \begin{bmatrix} \x_1 & \ldots & \x_m \end{bmatrix} 
 \end{equation}
 where $\PHI \in \Complex^{n \times m}$ and $\PHI^* \H \PHI = \I$, $\SIGMA \in \Reals^{m \times m}$ is a diagonal matrix with $\{\sigma_k\}_{k=1}^m$ on the diagonal such that $\sigma_1 \ge \cdots \ge \sigma_m \ge 0$, and $\W \in \Complex^{m \times m}$ and $\W^* \W = \W \W^* = \I$.
 The POD modes are then the columns of $\PHI = \begin{bmatrix} \phiv_1 & \cdots & \phiv_m \end{bmatrix}$.
+From this point forward, we will truncate and redefine the POD matrix by $\PHI := \begin{bmatrix} \phiv_1 & \cdots & \phiv_r \end{bmatrix} \in \Complex^{n \times r}$.
 
 The primary challenge in nonlinear modeling is to capture nonlinear dynamics in a way that is both accurate and computationally efficient.
 The POD-DEIM algorithm \citep{ChaturantabutIEEECDC09, ChaturantabutRice09a} addresses this issue as follows.
-Suppose that the discrete-space dynamics contain the nonlinear function $\f : \Complex^n \to \Complex^n$, and the dynamics are given for $\x(t) : \Reals \to \Complex^n$ by
+Suppose that the discrete-space dynamics contain the nonlinear function $\f : \Complex^n \to \Complex^n$, and the dynamics are given for $\x(t) \in \Complex^n$ by
 \begin{equation}
     \d{\x}{t} = \A \x + \f(\x).
 \end{equation}
-We restrict $\x$ to the span of $\{\phiv_j\}_{j=1}^r$ by assigning POD mode coefficients $\a(t) := \begin{bmatrix} a_1(t) & \cdots & a_r(t) \end{bmatrix} : \Reals \to \Complex^r$ such that $\x(t) = \PHI \a(t)$.
+We restrict $\x$ to the span of $\{\phiv_j\}_{j=1}^r$ by assigning POD mode coefficients $\a(t) := \begin{bmatrix} a_1(t) & \cdots & a_r(t) \end{bmatrix} \in \Complex^r$ such that $\x(t) = \PHI \a(t)$.
 Using this projection, we arrive at
 \begin{equation}
     \label{eq:galerkin}
@@ -269,7 +270,7 @@ We remark that this shortcut is generally allowed, even if $\f$ does not appear 
 For instance, suppose that $\f(\x)$ is the discrete-space formulation of the function $f(w) = -w \, \partial w / \partial x$, as in~\eqref{eq:ks}.
 To evaluate $\ft(\P^* \x)$, one would simply evaluate both $-w$ and $\partial w / \partial x$ at the DEIM points $x_j$ corresponding to the nonzero elements of the columns of $\P$, and multiply the result.
 
-Finally, we combine (\ref{eq:galerkin}, \ref{eq:nonlinear-projection}, \ref{eq:zero-error}, \ref{eq:pointwise}) to obtain the reduced-order model
+Finally, we combine (\ref{eq:galerkin}, \ref{eq:nonlinear-projection}--\ref{eq:pointwise}) to obtain the reduced-order model
 \begin{equation}
     \d{\a}{t} = \PHI^* \H \A \PHI \a + \PHI^* \H \PSI (\P^* \PSI)^{-1} \ft(\P^* \PHI \a).
 \end{equation}
