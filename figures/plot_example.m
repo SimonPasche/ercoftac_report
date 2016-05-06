@@ -23,6 +23,14 @@ title('Random time series: $x_n$ and $x_u$', ...
 l = legend('Random normal: $x_n$', 'Uniform random: $x_u$');
 set(l, 'Interpreter', 'Latex', 'Location', 'Best', 'FontSize', fontsize - 1)
 
+% Subfigure label if needed.
+xl = xlim;
+yl = ylim;
+text(xl(1) - 0.14 * (xl(2) - xl(1)), ...
+    yl(2) - 0.01 * (yl(2) - yl(1)), ...
+    '(a)', ...
+    'Interpreter', 'Latex')
+
 %% Set options and print.
 set(gca, 'FontSize', fontsize) % Set axis label font size.
 set(gcf, 'PaperPositionMode', 'auto') % Print as it appears on the screen.
