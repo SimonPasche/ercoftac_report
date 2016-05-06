@@ -139,7 +139,7 @@ Despite the popularity of POD-based reduced order models, the technique suffers 
 In particular, the construction of nonlinear terms in POD models may be computationally expensive.
 
 The discrete empirical interpolation method \citep[DEIM;][]{ChaturantabutIEEECDC09, ChaturantabutRice09a} addresses the last concern by intelligently selecting discrete points in the domain for which the nonlinear term is computed, and neglecting all other points.
-The DEIM method has been shown to be very computationally efficient and to create very accurate POD models.
+Although other nonlinear POD models exist \citep[see, e.g.,][]{NoackJFM03}, the DEIM method has been shown to be very computationally efficient and to create very accurate POD models.
 Although error bounds have been derived for DEIM, the precise reasons for its success have not been rigorously proven.
 
 In this report, we cover two topics related to the \KSE.
@@ -180,11 +180,6 @@ The purpose of this term is to allow the base flow to be fixed at $w(x, t) = 0$,
 
 \subsection{POD-DEIM}
 
-\kkc{%
-    I'm consciously being a bit verbose here.
-    It's not hard to cut this section short to make more room for results, if need be.%
-}
-
 Proper orthogonal decomposition \citep{SirovichQAM87, HolmesTCSDSS} is a method of identifying dominant directions in a size $m$ set of data $\{\x_k\}_{k=1}^m$, with $\x_k \in \Complex^n$ for $k = 1, \ldots, m$.
 (It is common in many problems to restrict $\x_k$ to $\Reals^n$.)
 The modes are ranked in a particular order so the first $r$ modes maximize the orthogonal projection of the data onto the span of those modes for each $r = 1, \ldots, m$.
@@ -209,22 +204,8 @@ Given the data matrix $\X := \begin{bmatrix} \x_1 & \ldots & \x_m \end{bmatrix} 
 where $\PHI \in \Complex^{n \times m}$ and $\PHI^* \H \PHI = \I$, $\SIGMA \in \Reals^{m \times m}$ is a diagonal matrix with $\{\sigma_k\}_{k=1}^m$ on the diagonal such that $\sigma_1 \ge \cdots \ge \sigma_m \ge 0$, and $\W \in \Complex^{m \times m}$ and $\W^* \W = \W \W^* = \I$.
 The POD modes are then the columns of $\PHI = \begin{bmatrix} \phiv_1 & \cdots & \phiv_m \end{bmatrix}$.
 
-% We remark that in the typical case that $m \ll n$, it is more computationally efficient to perform the $m \times m$ eigendecomposition
-% \begin{equation}
-%     \X^* \H \X = \W \SIGMA^2 \W^*
-% \end{equation}
-% than the $n \times m$ SVD~\eqref{eq:svd}.
-% The POD modes can then be recovered from~\eqref{eq:svd} by $\PHI = \X \W \SIGMA^{-1}$.
-% This technique is known as the method of snapshots.
-
 The primary challenge in nonlinear modeling is to capture nonlinear dynamics in a way that is both accurate and computationally efficient.
-In fluid dynamics, a common method is to pre-compute nonlinear combinations of POD modes so that the nonlinear dynamics are expressed as tensor products of the POD coefficients \citep[see, e.g.,][(3.8)]{NoackJFM03}.
-Here, we focus instead on the POD-DEIM method proposed by \citet{ChaturantabutIEEECDC09, ChaturantabutRice09a}.
-The POD-DEIM method is based on the observation that nonlinearities may be approximated from information at only several discrete points in the domain, especially if the nonlinearity is a spatially sparse feature.
-Therefore, instead of evaluating the entire nonlinear term in the reduced-order model, we only evaluate it at $s \ll n$ points in the domain.
-Whereas the former is naively at least an $\O(n r)$ computation, the latter is only an $\O(s r)$ computation \citep{ChaturantabutIEEECDC09,ChaturantabutRice09a}.
-
-The POD-DEIM algorithm proceeds as follows.
+The POD-DEIM algorithm \citep{ChaturantabutIEEECDC09, ChaturantabutRice09a} addresses this issue as follows.
 Suppose that the discrete-space dynamics contain the nonlinear function $\f : \Complex^n \to \Complex^n$, and the dynamics are given for $\x(t) : \Reals \to \Complex^n$ by
 \begin{equation}
     \d{\x}{t} = \A \x + \f(\x).
