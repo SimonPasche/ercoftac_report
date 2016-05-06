@@ -13,11 +13,11 @@ colorbar
 colormap(zeroed_colormap(min(w(:)), max(w(:))))
 
 % Use LaTeX font whenever possible.
-xlabel('$t$', 'Interpreter', 'Latex')
-ylabel('$x$', 'Interpreter', 'Latex')
+xlabel('$x$', 'Interpreter', 'Latex')
+ylabel('$t$', 'Interpreter', 'Latex')
 
 set(gca, 'FontSize', fontsize) % Set axis label font size.
-set(gca, 'Position', [0.13, 0.14, 0.65, 0.84])
+set(gca, 'Position', [0.14, 0.14, 0.64, 0.84])
 set(gcf, 'PaperPositionMode', 'auto') % Print as it appears on the screen.
 
 % The 3rd value is the width, and the 4th is the height.  A width of 265 is
@@ -46,11 +46,11 @@ colorbar
 colormap(zeroed_colormap(min(w(:)), max(w(:))))
 
 % Use LaTeX font whenever possible.
-xlabel('$t$', 'Interpreter', 'Latex')
-ylabel('$x$', 'Interpreter', 'Latex')
+xlabel('$x$', 'Interpreter', 'Latex')
+ylabel('$t$', 'Interpreter', 'Latex')
 
 set(gca, 'FontSize', fontsize) % Set axis label font size.
-set(gca, 'Position', [0.14, 0.14, 0.64, 0.84])
+set(gca, 'Position', [0.15, 0.14, 0.63, 0.84])
 set(gcf, 'PaperPositionMode', 'auto') % Print as it appears on the screen.
 set(gcf, 'Position', [100, 100, 239, 200])
 
