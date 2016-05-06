@@ -24,8 +24,6 @@
 
 % Operators.
 \renewcommand*{\L}{\mathscr{L}}
-\newcommand*{\Lnp}{\L_\mathrm{np}}
-\newcommand*{\Lp}{\L_\mathrm{p}}
 \renewcommand*{\O}{\mathcal{O}}
 \renewcommand*{\d}[3][1]{%
     \if#11
@@ -72,6 +70,7 @@
 
 % hyperref commands.
 \renewcommand*{\sectionautorefname}{Section}
+\renewcommand*{\subsectionautorefname}{\sectionautorefname}
 
 % Other commands.
 \newcommand{\KSE}{Kuramoto--Sivashinsky equation}
@@ -153,6 +152,7 @@ Finally, we summarize our work in \autoref{sec:conclusions}.
 \label{sec:theory}
 
 \subsection{The \KSE}
+\label{sec:ks}
 
 In this report, we cover two different forms of the \KSE.
 Given the streamwise displacement $x$ and time $t$, the dependent variable $w(x, t) : \Reals \times \Reals \to \Reals$ obeys the nonlinear equation
@@ -160,7 +160,7 @@ Given the streamwise displacement $x$ and time $t$, the dependent variable $w(x,
     \label{eq:ks}
     \p{w}{t} = \L w - w \p{w}{x},
 \end{equation}
-where the linear operator $\Lp$ is given by
+where the linear operator $\L$ is given by
 \begin{equation}
     \label{eq:ks-linear}
     \L := - \left(U \p{}{x} + \p{}{x} \left(\mu_0 \p{}{x}\right) + \gamma \p[4]{}{x}\right).
@@ -294,7 +294,14 @@ The shift-and-invert variant of the Arnoldi method \citep[see][]{TrefethenNLA} i
 
 \subsection{Parallel equation}
 
-\kkc{Include discussion of analytical eigendecomposition and Hopf bifurcations.}
+In the parallel equation, the eigendecomposition of the linear dynamics $\L$ about the base flow $w(x) = 0$ can be expressed analytically.
+Because of the domain periodicity, we assume eigenmodes of the form $w_n(x) = e^{i \pi n x}$ for $n \in \Ints$.
+The eigendecomposition $\L w_n = \lambda_n w_n$, for $\lambda_n \in \Complex$, therefore yields $\lambda_n = (\pi n)^2 (\mu_0 - (\pi n)^2 \gamma) - i \pi n U$.
+Then $n = 0$ eigenmode---corresponding to $\lambda_0 = 0$---is simply the mode where $w(x)$ is a constant, and is related to the arbitrary velocity scale discussed in \autoref{sec:ks}.
+Besides this mode, all other eigenmodes have a nonzero imaginary part.
+Examining the structure of the real part of $\lambda_n$, it is evident that the $n = \pm 1$ mode is the least stable mode.
+In particular, the $n = \pm 1$ mode undergoes a Hopf bifurcation when $\gamma = \mu_0 / \pi^2$.
+The corresponding eigenvalue reveals that the base flow is stable when $\gamma > \mu / \pi^2$ and unstable when $\gamma < \mu / \pi^2$.
 
 \subsection{Non-parallel equation}
 
