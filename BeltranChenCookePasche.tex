@@ -280,16 +280,21 @@ In addition, we will employ $s = r$ for simplicity in this report.
 \section{Numerical methods}
 \label{sec:methods}
 
-\cite{WeidemanACMTMS00}
-\cite{HouJCP07}
-\cite{HechtJNM12}
+In the parallel \KSE, we use the Fourier pseudospectral method described by \cite{WeidemanACMTMS00} to compute differentiation matrices.
+To reduce minimize the amplification of short-wavelength noise by the fourth derivative, we employ the 36th order filter described by \cite{HouJCP07} for the diffusion term.
+We use the uniform spatial discretization $\Delta x = 0.005$, such that the periodic domain $x \in [-1, 1]$ is comprised of 400 grid points.
+The parallel equation is simulated and analyzed in MATLAB.
+
+In the non-parallel \KSE, we use the finite element software FreeFem++ \citep{HechtJNM12}, employing 4,000 equispaced elements with width $\Delta x = 0.05$ on the domain $x \in [-100, 100]$.
+Homogeneous Dirichlet conditions are set at $x = -100$, and outflow conditions are set at $x = 100$.
+The shift-and-invert variant of the Arnoldi method \citep[see][]{TrefethenNLA} is used to compute the leading eigenvalues and eigenmodes of the linearized dynamics.
 
 \section{Characterizations of attractors}
 \label{sec:attractors}
 
 \subsection{Parallel equation}
 
-% Include discussion of Hopf bifurcation
+\kkc{Include discussion of analytical eigendecomposition and Hopf bifurcations.}
 
 \subsection{Non-parallel equation}
 
