@@ -197,9 +197,9 @@ Given an inner product $\ip{\cdot}{\cdot} : \Complex^n \times \Complex^n \to \Co
 \end{subequations}
 In reduced-order modeling, it is common to truncate the POD mode set and only consider the proper subset $\{\phiv_j\}_{j=1}^r$ for $1 \le r \ll m$, with the assumption that most interesting features of $\{\x_k\}_{k=1}^m$ are contained in only $r$ modes.
 
-The computation of POD is very straightforward.
+The computation of POD is straightforward.
 Let us assume the common case where $m \le n$, and let $(\cdot)^*$ indicate the conjugate transpose.
-Also, consider the $\ip{\z_j}{\z_k} := \z_k^* \H \z_j$ for $\z_j, \z_k \in \Complex^n$, where typically, $\H \in \Reals^{n \times n}$ is a diagonal matrix with the positive grid sizes on the diagonal.
+Also, consider the inner product $\ip{\cdot}{\cdot} : \Complex^n \times \Complex^n \to \Complex; \z_j, \z_k \mapsto \z_k^* \H \z_j$, where typically, $\H \in \Reals^{n \times n}$ is a diagonal matrix with the positive grid sizes on the diagonal.
 (On uniform grids, we would normally have $\H = \I$.)
 Given the data matrix $\X := \begin{bmatrix} \x_1 & \ldots & \x_m \end{bmatrix} \in \Complex^{n \times m}$, the economy-sized singular value decomposition (SVD) of $\H\half \X$ is
 \begin{equation}
@@ -207,20 +207,19 @@ Given the data matrix $\X := \begin{bmatrix} \x_1 & \ldots & \x_m \end{bmatrix} 
     \H\half \X = (\H\half\PHI) \SIGMA \W^*,
 \end{equation}
 where $\PHI \in \Complex^{n \times m}$ and $\PHI^* \H \PHI = \I$, $\SIGMA \in \Reals^{m \times m}$ is a diagonal matrix with $\{\sigma_k\}_{k=1}^m$ on the diagonal such that $\sigma_1 \ge \cdots \ge \sigma_m \ge 0$, and $\W \in \Complex^{m \times m}$ and $\W^* \W = \W \W^* = \I$.
-The POD modes are then the columns of $\PHI$; that is, $\PHI = \begin{bmatrix} \phiv_1 & \cdots & \phiv_m \end{bmatrix}$.
+The POD modes are then the columns of $\PHI = \begin{bmatrix} \phiv_1 & \cdots & \phiv_m \end{bmatrix}$.
 
-We remark that in the typical case that $m \ll n$, it is more computationally efficient to perform the $m \times m$ eigendecomposition
-\begin{equation}
-    \X^* \H \X = \W \SIGMA^2 \W^*
-\end{equation}
-than the $n \times m$ SVD~\eqref{eq:svd}.
-The POD modes can then be recovered from~\eqref{eq:svd} by $\PHI = \X \W \SIGMA^{-1}$.
-This technique is known as the method of snapshots.
+% We remark that in the typical case that $m \ll n$, it is more computationally efficient to perform the $m \times m$ eigendecomposition
+% \begin{equation}
+%     \X^* \H \X = \W \SIGMA^2 \W^*
+% \end{equation}
+% than the $n \times m$ SVD~\eqref{eq:svd}.
+% The POD modes can then be recovered from~\eqref{eq:svd} by $\PHI = \X \W \SIGMA^{-1}$.
+% This technique is known as the method of snapshots.
 
 The primary challenge in nonlinear modeling is to capture nonlinear dynamics in a way that is both accurate and computationally efficient.
-In fluid dynamics, a common method is to pre-compute nonlinear combinations of POD modes so that the nonlinear dynamics are expressed as tensor products with $\a$ \citep[see, e.g.,][(3.8)]{NoackJFM03}.
+In fluid dynamics, a common method is to pre-compute nonlinear combinations of POD modes so that the nonlinear dynamics are expressed as tensor products of the POD coefficients \citep[see, e.g.,][(3.8)]{NoackJFM03}.
 Here, we focus instead on the POD-DEIM method proposed by \citet{ChaturantabutIEEECDC09, ChaturantabutRice09a}.
-
 The POD-DEIM method is based on the observation that nonlinearities may be approximated from information at only several discrete points in the domain, especially if the nonlinearity is a spatially sparse feature.
 Therefore, instead of evaluating the entire nonlinear term in the reduced-order model, we only evaluate it at $s \ll n$ points in the domain.
 Whereas the former is naively at least an $\O(n r)$ computation, the latter is only an $\O(s r)$ computation \citep{ChaturantabutIEEECDC09,ChaturantabutRice09a}.
@@ -230,15 +229,16 @@ Suppose that the discrete-space dynamics contain the nonlinear function $\f : \C
 \begin{equation}
     \d{\x}{t} = \A \x + \f(\x).
 \end{equation}
-We restrict $\x$ to the span of $\{\phi_j\}_{j=1}^r$ by assigning POD mode coefficients $\a(t) := \begin{bmatrix} a_1(t) & \cdots & a_r(t) \end{bmatrix} : \Reals \to \Complex^r$ such that $\x(t) = \PHI \a(t)$.
+We restrict $\x$ to the span of $\{\phiv_j\}_{j=1}^r$ by assigning POD mode coefficients $\a(t) := \begin{bmatrix} a_1(t) & \cdots & a_r(t) \end{bmatrix} : \Reals \to \Complex^r$ such that $\x(t) = \PHI \a(t)$.
 Using this projection, we arrive at
 \begin{equation}
     \label{eq:galerkin}
     \d{\a}{t} = \PHI^* \H \A \PHI \a + \PHI^* \H \f(\PHI \a),
 \end{equation}
 but the nonlinear term must still be computed over $\Complex^n$.
+
 Therefore, we also compute POD modes $\psiv_j \in \Complex^n$ for $j = 1, \ldots, s$ from the nonlinear terms $\f(\x_1), \ldots, \f(\x_m)$, and we define $\PSI := \begin{bmatrix} \psiv_1 & \cdots & \psiv_s \end{bmatrix}$.
-Next, we project the output of $\f$ to the span of $\{\psiv_j\}_{j=1}^s$, such that for some coefficient vector, $\c \in \Complex^s$, error vector $\epsilonv \in \Complex^n$, and input $\x \in \Complex^n$,
+Next, we project the output of $\f$ to the span of $\{\psiv_j\}_{j=1}^s$, such that for some coefficient vector $\c \in \Complex^s$, error vector $\epsilonv \in \Complex^n$, and input $\x \in \Complex^n$,
 \begin{equation}
     \f(\x) = \PSI \c + \epsilonv
 \end{equation}
@@ -247,7 +247,7 @@ To reduce the computation of $\f$ to one over $\Complex^s$, we use the DEIM algo
 \begin{algorithm}[t]
     \caption{
         Discrete empirical interpolation method;
-        $\PSI_j$ and $\P_j$ respectively denote the matrices comprised of first $j$ columns of $\PSI$ and $\P$.%
+        $\PSI_j$ and $\P_j$ respectively denote the matrices comprised of first $j$ columns of $\PSI$ and $\P$, and $P_{j, k}$ denotes the entry of $\P$ in row $j$ and column $k$.%
     }
     \label{algo:deim}
 
@@ -259,11 +259,11 @@ To reduce the computation of $\f$ to one over $\Complex^s$, we use the DEIM algo
 
     $m \leftarrow \arg \max |\psiv_1|$ \;
     $\P \leftarrow 0^{n \times s}$ \;
-    $\P_{m, 1} \leftarrow 1$ \;
+    $P_{m, 1} \leftarrow 1$ \;
     \For{$j = 2, \ldots, s$} {
         $\r \leftarrow (\I - \PSI_{j-1} (\P_{j-1}^* \PSI_{j-1})^{-1} \P_{j-1}^*) \psiv_j$ \;
         $m \leftarrow \arg \max |\r|$ \;
-        $\P_{m, j} \leftarrow 1$ \;
+        $P_{m, j} \leftarrow 1$ \;
     }
 \end{algorithm}
 to choose a projection matrix $\P \in \Binary^{n \times s}$ that consists of all zeros, except that each column has one unique index for which the entry is one.
@@ -284,13 +284,13 @@ To complete the POD-DEIM procedure, we make two assumptions: first, we assume th
     \P^* \f(\x) = \ft(\P^* \x).
 \end{equation}
 That is, $\P^* \f(\x)$ first computes $\f(\x)$ and then selects discrete elements of the output to keep; on the other hand, $\ft(\P^* \x)$ first selects discrete elements of the \emph{input}, and computes the nonlinearity only on those elements.
-We remark that this is generally allowed, even if $\f$ does not appear to be a pointwise operation, e.g., if it involves spatial derivatives.
+We remark that this shortcut is generally allowed, even if $\f$ does not appear to be a pointwise operation, e.g., if it involves spatial derivatives.
 For instance, suppose that $\f(\x)$ is the discrete-space formulation of the function $f(w) = -w \, \partial w / \partial x$, as in~\eqref{eq:ks}.
 To evaluate $\ft(\P^* \x)$, one would simply evaluate both $-w$ and $\partial w / \partial x$ at the DEIM points $x_j$ corresponding to the nonzero elements of the columns of $\P$, and multiply the result.
 
 Finally, we combine (\ref{eq:galerkin}, \ref{eq:nonlinear-projection}, \ref{eq:zero-error}, \ref{eq:pointwise}) to obtain the reduced-order model
 \begin{equation}
-    \d{\a}{t} = \PHI^* \H \A \PHI \a + \PHI^* \H \PSI (\P^* \PSI)^{-1} \ft(\P^* \PHI \a)
+    \d{\a}{t} = \PHI^* \H \A \PHI \a + \PHI^* \H \PSI (\P^* \PSI)^{-1} \ft(\P^* \PHI \a).
 \end{equation}
 The matrices $\PHI^* \H \PSI (\P^* \PSI)^{-1} \in \Complex^{r \times s}$ and $\P^* \PHI \in \Complex^{s \times r}$ should be pre-computed for maximal efficiency.
 We remark that it is never actually necessary to represent or use $\P^*$ explicitly in computations; in software, it is sufficient just to use its nonzero entries to manipulate the indices of its operand.
