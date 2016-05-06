@@ -6,6 +6,7 @@
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
 \usepackage{hyperref}
+\usepackage[ruled, linesnumbered]{algorithm2e}
 \usepackage{bm}
 \usepackage{epsf,graphicx,amssymb,amsmath,amsbsy,authblk}
 \usepackage[english]{babel}
@@ -60,6 +61,7 @@
 \renewcommand*{\c}{\mathbf{c}}
 \newcommand*{\f}{\mathbf{f}}
 \newcommand*{\ft}{\tilde{\f}}
+\renewcommand*{\r}{\mathbf{r}}
 \newcommand*{\w}{\mathbf{w}}
 \newcommand*{\x}{\mathbf{x}}
 \newcommand*{\z}{\mathbf{z}}
@@ -275,7 +277,30 @@ Next, we project the output of $\f$ to the span of $\{\psiv_j\}_{j=1}^s$, such t
     \f(\x) = \PSI \c + \epsilonv
 \end{equation}
 and $\ip{\epsilonv}{\psiv_j} = 0$ for $j = 1, \ldots, s$.
-To reduce the computation of $\f$ to over $\Complex^s$, we use the DEIM algorithm to choose a projection matrix $\P \in \Binary^{n \times s}$ that consists of all zeros, except that each column has one unique index for which the entry is one.
+To reduce the computation of $\f$ to over $\Complex^s$, we use the DEIM algorithm (Algorithm~\ref{algo:deim})%
+\begin{algorithm}[t]
+    \caption{
+        Discrete empirical interpolation method;
+        $\PSI_j$ and $\P_j$ respectively denote the matrices comprised of first $j$ columns of $\PSI$ and $\P$.%
+    }
+    \label{algo:deim}
+
+    \DontPrintSemicolon
+    \SetAlgoLined
+
+    \KwData{Nonlinear POD modes $\PSI := \begin{bmatrix} \psiv_1 & \cdots & \psiv_s \end{bmatrix} \in \Complex^{n \times s}$}
+    \KwResult{DEIM projection matrix $\P \in \Binary^{n \times s}$}
+
+    $m \leftarrow \arg \max |\psiv_1|$ \;
+    $\P \leftarrow 0^{n \times s}$ \;
+    $\P_{m, 1} \leftarrow 1$ \;
+    \For{$j = 2, \ldots, s$} {
+        $\r \leftarrow (\I - \PSI_{j-1} (\P_{j-1}^* \PSI_{j-1})^{-1} \P_{j-1}^*) \psiv_j$ \;
+        $m \leftarrow \arg \max |\r|$ \;
+        $\P_{m, j} \leftarrow 1$ \;
+    }
+\end{algorithm}
+to choose a projection matrix $\P \in \Binary^{n \times s}$ that consists of all zeros, except that each column has one unique index for which the entry is one.
 Thus, $\P^* \f(\x) = \P^* \PSI \c + \P^* \epsilonv$; if $\P^* \PSI$ is full-rank, then $\c = (\P^* \PSI)^{-1} \P^* (\f(\x) - \epsilonv)$, and hence,
 \begin{equation}
     \label{eq:nonlinear-projection}
@@ -294,14 +319,15 @@ and second, we assume that there exists a pointwise version $\ft : \Complex^s \t
 \end{equation}
 That is, $\P^* \f(\x)$ first computes $\f(\x)$ and then selects discrete elements of the output to keep; on the other hand, $\ft(\P^* \x)$ first selects discrete elements of the \emph{input}, and computes the nonlinearity only on those elements.
 We remark that this is generally allowed, even if $\f$ does not appear to be a pointwise operation, e.g., if it involves spatial derivatives.
-For instance, suppose that $\f(\x)$ is the discrete-space formulation of the function $f(w) = w \, \partial w / \partial x$, as in~ (\ref{eq:ks-parallel}, \ref{eq:ks-nonparallel}).
-To evaluate $\ft(\P^* \x)$, one would simply evaluate both $w$ and $\partial w / \partial x$ at the DEIM points $x_j$ corresponding to the nonzero elements of the columns of $\P$, and multiply the result.
+For instance, suppose that $\f(\x)$ is the discrete-space formulation of the function $f(w) = -w \, \partial w / \partial x$, as in~(\ref{eq:ks-parallel}, \ref{eq:ks-nonparallel}).
+To evaluate $\ft(\P^* \x)$, one would simply evaluate both $-w$ and $\partial w / \partial x$ at the DEIM points $x_j$ corresponding to the nonzero elements of the columns of $\P$, and multiply the result.
 
 Finally, we combine (\ref{eq:galerkin}, \ref{eq:nonlinear-projection}, \ref{eq:zero-error}, \ref{eq:pointwise}) to obtain the reduced-order model
 \begin{equation}
     \d{\a}{t} = \PHI^* \A \PHI \a + \PHI^* \PSI (\P^* \PSI)^{-1} \ft(\P^* \PHI \a)
 \end{equation}
 The matrices $\PHI^* \PSI (\P^* \PSI)^{-1} \in \Complex^{r \times s}$ and $\P^* \PHI \in \Complex^{s \times r}$ should be pre-computed for maximal efficiency.
+We remark that it is never actually necessary to represent or use $\P^*$ explicitly in computations; in software, it is sufficient just to use its nonzero entries to manipulate the indices of its operand.
 
 \section{Numerical methods}
 \label{sec:methods}
