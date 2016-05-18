@@ -75,6 +75,7 @@
 % Other commands.
 \newcommand{\KSE}{Kuramoto--Sivashinsky equation}
 \newcommand{\kkc}[1]{\textcolor{red}{[KKC: #1]}}
+\newcommand{\eec}[1]{\textcolor{red}{[EEC: #1]}}
 
 \marginparwidth 0pt
 \oddsidemargin 0pt
@@ -325,9 +326,8 @@ The corresponding eigenvalue reveals that the base flow is stable when $\gamma >
 %======================================================================
 %EMMA
 %======================================================================
-We analysed three different cases, all with the same fixed $\mu = \pi^2$, but with varying $\gamma$. The first case is looks a point very close to the Hopf stability, $\gamma = 0.9$, the second looks at a case which is relatively far from the Hopf stability, $\gamma = 0.28$, and finally at a point just before the solution becomes chaotic, $\gamma = 0.24$.  
+We analyse a variety of different cases but only three different cases will be discussed here, all with the same fixed $\mu = \pi^2$, but with varying $\gamma$. The first case is a point very close to the Hopf stable fixed point, $\gamma = 0.9$, the second looks at a case which is relatively far from the Hopf stability, $\gamma = 0.28$, and finally at a point just before the solution becomes chaotic, $\gamma = 0.24$.  
 
-First of all we shall relay the results and then progress to a discussion.
 \begin{figure}[!h]
     \centering
     \includegraphics[width=.3\linewidth]{PhasePg09.png}
@@ -337,7 +337,7 @@ First of all we shall relay the results and then progress to a discussion.
     \includegraphics[width=.3\linewidth]{PhasePg024.png}
 
     \caption{%
-        Phase plots of the three cases for the parallel case. The green spot depicts the inital value and the red depicts the end value.
+        Phase portraits of the three cases for the parallel case. The green spot depicts the inital value and the red depicts the end value.
         (a)  $\mu_0 = \pi^2$, $\gamma = 0.9$.
         (b)  $\mu_0 = 3.95$, $\gamma = 0.28$.
         (c)  $\mu_0 = 3.95$, $\gamma = 0.24$.%  
@@ -355,7 +355,7 @@ First of all we shall relay the results and then progress to a discussion.
     \includegraphics[width=.3\linewidth]{TimeEvo_g024.png}
 
     \caption{%
-        Plots of the solution $w$ with respect to time.
+        Plots of the solution $w$ with respect to time for the parallel case.
         (a)  $\mu_0 = \pi^2$, $\gamma = 0.9$.
         (b)  $\mu_0 = 3.95$, $\gamma = 0.28$.
         (c)  $\mu_0 = 3.95$, $\gamma = 0.24$.%  
@@ -372,7 +372,7 @@ First of all we shall relay the results and then progress to a discussion.
     \includegraphics[width=.3\linewidth]{FFT_g024.png}
 
     \caption{%
-        Plots for the fast fourier transform of the solution in time.
+        Plots for the fast fourier transform of the solution in time for the parallel case.
         (a)  $\mu_0 = \pi^2$, $\gamma = 0.9$.
         (b)  $\mu_0 = 3.95$, $\gamma = 0.28$.
         (c)  $\mu_0 = 3.95$, $\gamma = 0.24$.%  
@@ -380,7 +380,12 @@ First of all we shall relay the results and then progress to a discussion.
     \label{fig:parallelFFT}
 \end{figure}
 
-First we will evaluate the first case for $\mu_0 = \pi^2$ and $\gamma = 0.9$. Since this case is closest to the hopf stable fixed point, it can be seen from figure (\ref{fig:parallelTime}a)
+The phase portraites vary largely for the different points, with case(a) depicting a periodic limit cycle, whereas cases (b) and (c) both show a quasi-periodic limit cycle, see figure(\ref{fig:parallelPhase}). Any value of gamma satisfying $?<\gamma<1$ produces phase plots similar to that of case (a), any satisfying $0.24<\gamma<?$ will produce a plot similar to (b) and any with $\gamma<0.24$ exhibit chaos.\eec{find out at which point we begin to see a change from one state to the next} Interestingly, case (c) appears to have a change in phase just before the solution becomes chaotic. 
+
+Case $\mu_0 = \pi^2$ and $\gamma = 0.9$ has the longest transient and as we move further away from the supercritial hopf bifurcation this transient region exists for shorter time periods, shown in figure (\ref{fig:parallelTime}).  This is to be expected since the case (a) is the closest to the supercritial hoph bifurcation and the cases selected increase in distance from the fixed point. From these set of figures we can see that the limit cycle for $\gamma = 0.9$ exibits a very regular, almost sinusoidal profile. This is confirmed by the fast Fouier transform which shows an extremely strong primary frequency, figure(\ref{fig:parallelFFT}a). As we progress further away from the fixed point to the quasi-periodic orbits we can see more and more non-linear dynamics present in the figures (\ref{fig:parallelTime}) and (\ref{fig:parallelFFT}) which would explain the quasi-periodic orbits in the phase portraits we see. 
+
+
+
 %=======================================================================
 %END EMMA
 %=======================================================================
