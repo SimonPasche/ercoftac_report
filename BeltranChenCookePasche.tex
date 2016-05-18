@@ -322,6 +322,69 @@ The corresponding eigenvalue reveals that the base flow is stable when $\gamma >
     \label{fig:time-resolved}
 \end{figure}
 
+%======================================================================
+%EMMA
+%======================================================================
+We analysed three different cases, all with the same fixed $\mu = \pi^2$, but with varying $\gamma$. The first case is looks a point very close to the Hopf stability, $\gamma = 0.9$, the second looks at a case which is relatively far from the Hopf stability, $\gamma = 0.28$, and finally at a point just before the solution becomes chaotic, $\gamma = 0.24$.  
+
+First of all we shall relay the results and then progress to a discussion.
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=.3\linewidth]{PhasePg09.png}
+    \hfill
+    \includegraphics[width=.3\linewidth]{PhasePg028.png}
+    \hfill
+    \includegraphics[width=.3\linewidth]{PhasePg024.png}
+
+    \caption{%
+        Phase plots of the three cases for the parallel case. The green spot depicts the inital value and the red depicts the end value.
+        (a)  $\mu_0 = \pi^2$, $\gamma = 0.9$.
+        (b)  $\mu_0 = 3.95$, $\gamma = 0.28$.
+        (c)  $\mu_0 = 3.95$, $\gamma = 0.24$.%  
+    }
+    \label{fig:parallelPhase}
+\end{figure}
+
+
+\begin{figure}[!h] 
+    \centering
+    \includegraphics[width=.3\linewidth]{TimeEvo_g09.png}
+    \hfill
+    \includegraphics[width=.3\linewidth]{TimeEvo_g028.png}
+    \hfill
+    \includegraphics[width=.3\linewidth]{TimeEvo_g024.png}
+
+    \caption{%
+        Plots of the solution $w$ with respect to time.
+        (a)  $\mu_0 = \pi^2$, $\gamma = 0.9$.
+        (b)  $\mu_0 = 3.95$, $\gamma = 0.28$.
+        (c)  $\mu_0 = 3.95$, $\gamma = 0.24$.%  
+    }
+    \label{fig:parallelTime}
+\end{figure}
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=.3\linewidth]{FFT_g09.png}
+    \hfill
+    \includegraphics[width=.3\linewidth]{FFT_g028.png}
+    \hfill
+    \includegraphics[width=.3\linewidth]{FFT_g024.png}
+
+    \caption{%
+        Plots for the fast fourier transform of the solution in time.
+        (a)  $\mu_0 = \pi^2$, $\gamma = 0.9$.
+        (b)  $\mu_0 = 3.95$, $\gamma = 0.28$.
+        (c)  $\mu_0 = 3.95$, $\gamma = 0.24$.%  
+    }
+    \label{fig:parallelFFT}
+\end{figure}
+
+First we will evaluate the first case for $\mu_0 = \pi^2$ and $\gamma = 0.9$. Since this case is closest to the hopf stable fixed point, it can be seen from figure (\ref{fig:parallelTime}a)
+%=======================================================================
+%END EMMA
+%=======================================================================
+
 \subsection{Non-parallel equation}
 
 \autoref{fig:time-resolved}(b) depicts\ldots
