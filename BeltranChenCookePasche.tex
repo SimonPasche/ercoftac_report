@@ -15,6 +15,7 @@
 \usepackage{mathrsfs}
 \usepackage{natbib}
 \usepackage{xcolor}
+\usepackage{multirow} % added by Pasche
 
 % Algebraic rings.
 \newcommand*{\Complex}{\mathbb{C}}
@@ -394,8 +395,128 @@ Case $\mu_0 = \pi^2$ and $\gamma = 0.9$ has the longest transient and as we move
 
 \autoref{fig:time-resolved}(b) depicts\ldots
 
-\section{POD-DEIM models of the parallel equation}
+\section{POD-DEIM models of the K-S equation}
 \label{sec:pod-deim}
+The ability of the POD-DEIM modes to capture the dynamic of the K-S equation through a Reduced Order Model (ROM) is investigated. Not only do we see that a small number of modes well capture the limit cycle, but also that transient modes correctly capture the limit cycle dynamics, and limit cycle modes correctly capture transient dynamic. We specify that the transient modes (TM) refer to the POD-DEIM modes computed from the temporal snapshots of the transient part of the DNS while limit cycle modes (LCM) refer to the POD-DEIM modes computed from the temporal snapshots of the limit cycle part of the DNS. These definitions are case dependant, so we specify the time ranges for the different dynamics inside each following subsections. 
+
+\subsection{Parallel equation}
+\label{subsec:parallel}
+The POD-DEIM modes and ROM of the parallel equation are based on a Fourier pseudospectral discretization. We investigate two sets of parameters, $\gamma = 0.9$ , $\mu=\pi^2$, $U=1$ and $\gamma = 0.28$ , $\mu=\pi^2$, $U=1$. The dynamic of this system for both sets of parameters represents a limit cycle in the Hopf bifurcation sense when considering $\gamma$ as bifurcation parameter. The first set is close to the instability threshold and the second set is further away from it, where nonlinear effects become stronger and strengthen the second harmonic of the Fourier spectrum, see \kkc{figure \ref{spectrum}}.
+
+The ROMs computed from the POD-DEIM modes of the limit cycle converge when a minimum of 8 modes, for the first set, and 10 modes, for the second set of parameters, are considered. As expected, the accuracy of the ROM increases with the number of modes, see Table \ref{tab:errorcycle}. The errors are a shift in the convective velocity and a mismatch in the amplitude of the limit cycle. 
+
+\begin{table}[!ht]
+\begin{center}
+\begin{tabular}{ c || c | c | c | c | c |c|}
+%\hline
+ N of modes &  8 & 10 & 12 & 14 & 18 &30\\ \hline
+ROM error $\gamma=0.9$, &  \multirow{2}{*}{$3\cdot 10^{-2}$} & \multirow{2}{*}{$5\cdot 10^{-4}$} & \multirow{2}{*}{$9\cdot 10^{-5}$} & \multirow{2}{*}{$7\cdot 10^{-5}$}& \multirow{2}{*}{$4\cdot 10^{-5}$}& \multirow{2}{*}{$1\cdot 10^{-5}$}\\
+ $\mu = \pi^2$, $ U = 1$ & & & & && \\ \hline
+ROM error $\gamma=0.28$, & \multirow{2}{*}{-}  & \multirow{2}{*}{$1\cdot 10^{0}$}  & \multirow{2}{*}{$3\cdot 10^{-2}$}  & \multirow{2}{*}{$9\cdot 10^{-3}$}& \multirow{2}{*}{$1\cdot 10^{-4}$}& \multirow{2}{*}{$1\cdot 10^{-4}$} \\
+ $\mu = \pi^2$, $ U = 1$ & & & & &&\\
+\hline
+\end{tabular}
+\caption{Relative errors of the ROM for the parallel case with respect to the DNS on 10 limit cycles.\label{tab:errorcycle}}
+\end{center}
+\end{table}
+
+The ability to reproduce the transient dynamic by the ROM built on the limit cycle modes is investigated for the second case, $\gamma=0.28$, $\mu_0=\pi^2$, $U=1$. The number of modes is fixed to 30 to avoid any mismatches between the ROM and the DNS along the limit cycle. The solutions obtained from the DNS and ROM and their energies are depicted in Fig. \ref{fig:Energyparallel} (a) and (b). 
+\begin{figure}
+    \centering
+    \includegraphics{TimeEvoparallel}
+    \hfill
+    \includegraphics{Energy3}
+    \caption{%
+    	    (a) Time history of the ROM (red) and DNS (blue) with $\mu_0 = \pi^2$ and $\gamma = 0.28$, where the ROM is built on the limit cycle modes computed for $t\in [0.5, 1.5]$ and evaluated in the transient regime, starting at $t=0.1$.
+        (b) Energy of the ROM and DNS solutions for the same conditions.
+    }
+    \label{fig:Energyparallel}
+\end{figure}
+The time evolution as well as the energy of the signal are in agreement, a relative error less than $5 \cdot 10^{-5} $ is obtained. These results show that the POD basis, computed for $t\in [0.5, 1.5]$, is able to capture the DNS evolution out of its range of definition. Any spatial solutions from the DNS snapshots projected in the POD basis are identical and may be used as initial conditions without any deviation in the time evolution of the DNS with the ROM. Thus not only does the POD basis cover all the DNS solution but also, the dynamic of the transient part of the DNS is captured. The figure of the reverse approach is not presented, the prediction of the limit cycle by the transient modes, returns the same accurate results. This means that the POD basis from the limit cycle, computed for $t\in [0.5, 1.5]$, and the one from the transient part, computed for $t\in [0.1, 0.5]$, represents the same subspace with different eigenmodes, Fig \ref{fig:PODmodeparallel}, and that the POD-DEIM method faithfully reproduce the dynamic of the system. 
+\begin{figure}
+    \centering
+    \includegraphics{PODMode1}
+    \hfill
+    \includegraphics{PODMode2}
+    \caption{%
+    	    (a) POD modes for  $\mu_0 = \pi^2$ and $\gamma = 0.28$ built on the transient regime for $t\in [0.1, 0.5]$.
+        (b) POD modes for  $\mu_0 = \pi^2$ and $\gamma = 0.28$ built on the limit cycle regime for $t\in [0.5, 1.5]$.
+    }
+    \label{fig:PODmodeparallel}
+\end{figure}
+
+The solution of the parallel case involved a convective wave in a periodic domain, which by definition is spatially invariant. Thus the space preferences of the DEIM modes, which are located at the underly nonlinearities of the dynamics are  scattered throughout the domain. This property of the problem may the construction of different basis which has the same subspace and allow us to peak any collection of DNS snapshots to reproduce the dynamic of the system with a ROM based on POD-DEIM.      
+
+\subsection{Nonparallel equation}
+\label{subsec:nonparallel}
+The nonparallel K-S equation is discretized by finite element in the domain $x \in [-100,100]$. The parameters are set to $\mu = 3.95$ , $\gamma=1.0$ and $U=1$. This dynamical system, for this set, has only one unstable complex conjugate eigenvalue which leads to a Hopf bifurcation. The dynamic of the nonparallel K-S equation is localized around $x=0$ where waves appear and are convected downstream. The POD-DEIM modes built on the limit cycle $t\in[100,200]$, reveal that the POD modes, Fig \ref{fig:PODmodenonparallel} (a), extend to the end of the domain. 
+\begin{figure}
+    \centering
+    \includegraphics{PODModenon}
+    \hfill
+    \includegraphics{DEIMModenon}
+    \caption{%
+    	    (a) POD modes and (b) DEIM modes for  $\mu_0 = 3.95$ and $\gamma = 1.0$ built on the limit cycle regime for $t\in [100, 200]$ and the 70 location of the DEIM points.
+        }
+    \label{fig:PODmodenonparallel}
+\end{figure}
+In contrast to the parallel case where spatial invariance appears, the DEIM modes, Fig \ref{fig:PODmodenonparallel} (b), are gathered around the center of the domain. Figure \ref{fig:PODmodenonparallel} (b) depicted oscillatory DEIM modes. This is explained by remembering that, the nonlinear snapshots from $\nabla w \cdot w$ used to obtain the DEIM mode troughout singular value decomposition, are computed without solving a variational problem. The matrix of spatial derivative of the finite element formulation produces oscillatory behaviour. However the accuracy of the solution is not affected by these oscillations because the variational problem is solved when the ROM is evaluated. Table \ref{tab:errorcyclenon} shows the convergence of the ROM, as a function of the number of modes. As for the parallel case, the accuracy of the ROM increase with the number of modes. Reducing the number of modes progressively induces a mismatch in the amplitude of the limit cycle and a shift in the convective velocity. A minimum of 8 modes are needed to obtain convergence of the ROM. In the following, a sufficiently large number of mode, 70, is peaked to obtain accurate reproduction of the limit cycle, to investigate transient dynamic of the ROM. 
+
+\begin{table}[!ht]
+\begin{center}
+\begin{tabular}{ c || c | c | c | c | c |c|}
+%\hline
+ N of modes &  8 & 10 & 18 & 30 & 50 &70\\ \hline
+ROM error $\gamma=1.0$, &  \multirow{2}{*}{$3\cdot 10^{-2}$} & \multirow{2}{*}{$5\cdot 10^{-3}$} & \multirow{2}{*}{$3\cdot 10^{-3}$} & \multirow{2}{*}{$1\cdot 10^{-3}$}& \multirow{2}{*}{$2\cdot 10^{-4}$}& \multirow{2}{*}{$3\cdot 10^{-5}$}\\
+ $\mu = 3.95$, $ U = 1$ & & & & && \\ \hline
+%ROM error $\gamma=0.28$, & \multirow{2}{*}{-}  & \multirow{2}{*}{$1\cdot 10^{0}$}  & \multirow{2}{*}{$3\cdot 10^{-2}$}  & \multirow{2}{*}{$9\cdot 10^{-3}$}& \multirow{2}{*}{$1\cdot 10^{-4}$}& \multirow{2}{*}{$1\cdot 10^{-4}$} \\
+% $\mu = 3.95$, $ U = 0.5$ & & & & &&\\
+\hline
+\end{tabular}
+\caption{Relative errors of the ROM for the nonparallel case with respect to the DNS on 10 limit cycles\label{tab:errorcyclenon}}
+\end{center}
+\end{table}
+
+The ability of the ROM to reproduce the transient behaviour of the system from the LCM or to reproduce the limit cycle from the TR, is bound to two conditions: first, the projection of the DNS solution on the POD basis should not introduce any deviation second, the ROM is able to reproduce the dynamic of the system. Table \ref{tab:energy} retranscribes the relative error on the energy of the DNS projected on the POD basis over the whole time domain. As expected the projection on the own basis is accurate but cross projections already induce errors. This mean that the same solutions cannot completely be recovered in the POD basis: this introduces an intermediate error on the initial condition of the ROM starting from a DNS snapshot.
+\begin{table}[!ht]
+\begin{center}
+\begin{tabular}{ c || c | c |}
+%\hline
+ Energy  &  Transient POD basis & Limit cycle POD basis \\ \hline 
+ Transient dynamic & $7\cdot 10^{-11}$ & $1\cdot 10^{-3}$ \\ \hline
+ Limit cycle dynamic & $1\cdot 10^{-5}$ & $3\cdot 10^{-14}$ \\ \hline
+\hline
+\end{tabular}
+\caption{Relative error on the energy of the solution when transient modes, computed for $t\in [0.5, 100]$, and the limit cycle modes, computed for $t\in [100,200]$, are projected on the transient solution of the DNS or on the limit cycle of the DNS.\label{tab:energy}}
+\end{center}
+\end{table}
+
+The case of predicting transient behaviour from the limit cycle modes introduce at the initial condition a discrepancy that is propagated along the simulation of the ROM due to the basis projection. The result shown on Fig \ref{fig:TImeEvononparallel} (a) reflects this discrepancy by inducing a phase shift in the transient and limit cycle. In contrast, the amplitude of the limit cycle and the frequency are well captured, with errors of $ 5\cdot 10^{-5}$ for the frequency and of $2\cdot 10^{-5} $ in the amplitude. As it is not possible to have exactly the same subspace for both basis, we cannot reproduce the same time history of the DNS but the dynamic is quite well captured. 
+ 
+\begin{figure}
+    \centering
+    \includegraphics{TimeEvononparallel2}
+    \hfill
+    \includegraphics{TimeEvononparallel1}
+    \caption{%
+    	    (a) limit cycle modes for transient and (b) transient modes for limit cycle.
+        }
+    \label{fig:TImeEvononparallel}
+\end{figure}
+
+The other case of predicting limit cycle from transient modes do not introduce the discrepancy in the initial condition because the last snapshots is used as initial condition for the ROM, Fig \ref{fig:TImeEvononparallel} (b). However we cannot retrieve the same accuracy as for limit cycle modes reproducing limit cycle behaviour. Another choice to obtain all the dynamic of the system is to built the mode on the transient part of the signal including a part of limit cycles. The POD basis will so reproduce faithfully the DNS snapshots in each regime, and the dynamic will be better captured. Table \ref{tab:errorcyclenon} present the error on the limit cycle as the transient modes include progressively the limit cycle snapshots. This technique allows us to increase the accuracy of the ROM when transient and limit cycle behaviour want to be captured.
+
+\begin{table}[!ht]
+\begin{center}
+\begin{tabular}{ c || c | c | c | c | c |c|}
+%\hline
+ Transient modes  & $t\in[0.5,70]$ & $t\in[0.5,100]$ & $t\in[0.5,160]$ & $t\in[0.5,180]$\\ \hline
+ relative error on CL & $1\cdot 10^{-1}$ & $9\cdot 10^{-3}$ & $2\cdot 10^{-3}$  & $2\cdot 10^{-3}$ \\ \hline
+\hline
+\end{tabular}
+\caption{Relative errors of the ROM for the nonparallel case with respect to the DNS on 10 limit cycles when the ROM start at $t=0.5$\label{tab:errorcyclenon}}
+\end{center}
+\end{table}
 
 \section{Conclusions}
 \label{sec:conclusions}
@@ -417,6 +538,8 @@ We would like to thank ERCOFTAC for funding and providing the 2016 Montestiglian
 We are also deeply grateful for Denis Sipp, Peter Schmid, and Shervin Bagheri for leading the school.
 K. K. C. was supported by the Viterbi Postdoctoral Fellowship through the Viterbi School of Engineering at the University of Southern California.
 \kkc{Victor, Emma, Simon---add your funding sources and other acknowledgements here.}
+
+Simon Pasche is supported by the Swiss National Science Foundation.
 
 \bibliography{BeltranChenCookePasche}
 
